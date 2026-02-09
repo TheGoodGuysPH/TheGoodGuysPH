@@ -64,27 +64,24 @@
             gap: 0.5rem;
         }
 
-        .logo img {
-            height: 50px;
-            width: auto;
-            object-fit: contain;
-        }
-
         .logo-text {
-            font-family: 'Clash Display', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -1px;
+            font-family: 'Cooper Black', 'Arial Black', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #2B5F8F;
+            letter-spacing: -2px;
+            text-transform: lowercase;
+            position: relative;
+            font-style: italic;
+            text-shadow: 
+                2px 2px 0px rgba(0, 0, 0, 0.1),
+                3px 3px 0px rgba(0, 0, 0, 0.08);
             animation: glow 3s ease-in-out infinite;
         }
 
         @keyframes glow {
-            0%, 100% { filter: drop-shadow(0 0 8px rgba(0, 102, 255, 0.3)); }
-            50% { filter: drop-shadow(0 0 20px rgba(0, 102, 255, 0.6)); }
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(43, 95, 143, 0.3)); }
+            50% { filter: drop-shadow(0 0 20px rgba(43, 95, 143, 0.6)); }
         }
 
         .nav-links {
@@ -168,6 +165,115 @@
         .cart-icon:hover {
             transform: scale(1.1);
             color: var(--primary-blue);
+        }
+
+        /* Hamburger Menu - Hidden on Desktop */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-text);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--pure-white);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 1500;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 6rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0;
+        }
+
+        .sidebar-links a {
+            display: block;
+            padding: 1.2rem 1rem;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--ice-blue);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-links a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 3px;
+            background: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .sidebar-links a:hover {
+            color: var(--primary-blue);
+            padding-left: 1.5rem;
+            background: var(--ice-blue);
+        }
+
+        .sidebar-links a:hover::before {
+            width: 5px;
         }
 
         /* Hero Section */
@@ -343,6 +449,35 @@
             width: 600px;
             height: auto;
             filter: drop-shadow(0 30px 60px rgba(0, 102, 255, 0.4));
+            position: relative;
+            z-index: 2;
+        }
+
+        .shoe-display::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            height: 40px;
+            background: radial-gradient(ellipse, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.3) 30%, transparent 70%);
+            filter: blur(15px);
+            animation: shadowPulse 6s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        @keyframes shadowPulse {
+            0%, 100% { 
+                opacity: 0.8; 
+                transform: translateX(-50%) scale(1);
+                filter: blur(15px);
+            }
+            50% { 
+                opacity: 0.6; 
+                transform: translateX(-50%) scale(0.85);
+                filter: blur(18px);
+            }
         }
 
         /* Featured Section */
@@ -385,8 +520,12 @@
             border-radius: 24px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            will-change: transform;
         }
 
         .product-card::before {
@@ -396,14 +535,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue));
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
             opacity: 0;
-            transition: opacity 0.5s;
+            transition: opacity 0.3s ease;
             z-index: 1;
+            pointer-events: none;
         }
 
         .product-card:hover::before {
-            opacity: 0.1;
+            opacity: 1;
         }
 
         .product-card:hover {
@@ -412,47 +552,39 @@
         }
 
         .product-image {
-            height: 350px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
-            position: relative;
             overflow: hidden;
         }
 
-        .product-image::after {
-            content: '';
-            position: absolute;
+        .product-image img {
             width: 100%;
             height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(0, 102, 255, 0.1), transparent);
-            opacity: 0;
-            transition: opacity 0.5s;
-        }
-
-        .product-card:hover .product-image::after {
-            opacity: 1;
-        }
-
-        .product-image img {
-            width: 85%;
-            height: auto;
-            max-height: 280px;
             object-fit: contain;
-            transform: rotate(-20deg);
-            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.15));
+            object-position: center;
+            transition: transform 0.3s ease;
+            will-change: transform;
         }
 
         .product-card:hover .product-image img {
-            transform: rotate(-15deg) scale(1.1);
+            transform: scale(1.03);
         }
 
         .product-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 2rem;
-            position: relative;
             z-index: 2;
+            background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.95) 20%, rgba(255, 255, 255, 0.98) 100%);
         }
 
         .product-tag {
@@ -482,6 +614,209 @@
             font-size: 1.3rem;
             font-weight: 700;
             color: var(--primary-blue);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0);
+            transition: background-color 0.2s ease;
+        }
+
+        .modal.active {
+            background-color: rgba(0, 0, 0, 0.85);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 32px;
+            width: 90%;
+            max-width: 1000px;
+            position: relative;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 50px 100px rgba(0, 102, 255, 0.3);
+            overflow: hidden;
+            will-change: transform, opacity;
+        }
+
+        .modal.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .close {
+            position: absolute;
+            right: 2rem;
+            top: 2rem;
+            color: var(--dark-text);
+            font-size: 2rem;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 10;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .close:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 0;
+        }
+
+        .modal-image {
+            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+            padding: 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .modal-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 102, 255, 0.1) 0%, transparent 70%);
+            animation: none;
+        }
+
+        .modal-image img {
+            width: 100%;
+            height: auto;
+            max-height: 500px;
+            object-fit: contain;
+            position: relative;
+            z-index: 2;
+            filter: drop-shadow(0 20px 40px rgba(0, 102, 255, 0.3));
+        }
+
+        @keyframes modalImageZoom {
+            from {
+                transform: scale(0.7);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-details {
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-tag {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .modal-details h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .modal-details p {
+            color: var(--gray-text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+        }
+
+        .modal-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+        }
+
+        .modal-features {
+            margin-bottom: 2rem;
+        }
+
+        .modal-features h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--gray-text);
+        }
+
+        .feature-item i {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
         }
 
         /* Collection Banner */
@@ -644,8 +979,12 @@
             border-radius: 20px;
             overflow: hidden;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             position: relative;
+            height: 350px;
+            display: flex;
+            flex-direction: column;
+            will-change: transform;
         }
 
         .shoe-item::before {
@@ -655,14 +994,15 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: linear-gradient(135deg, var(--primary-blue), var(--sky-blue));
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
             opacity: 0;
-            transition: opacity 0.4s;
+            transition: opacity 0.3s ease;
             z-index: 1;
+            pointer-events: none;
         }
 
         .shoe-item:hover::before {
-            opacity: 0.08;
+            opacity: 1;
         }
 
         .shoe-item:hover {
@@ -671,32 +1011,39 @@
         }
 
         .shoe-item-image {
-            height: 220px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
-            position: relative;
             overflow: hidden;
         }
 
         .shoe-item-image img {
-            width: 85%;
-            height: auto;
-            max-height: 180px;
+            width: 100%;
+            height: 100%;
             object-fit: contain;
-            transform: rotate(-20deg);
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            object-position: center;
+            transition: transform 0.3s ease;
+            will-change: transform;
         }
 
         .shoe-item:hover .shoe-item-image img {
-            transform: rotate(-15deg) scale(1.15);
+            transform: scale(1.03);
         }
 
         .shoe-item-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             padding: 1.5rem;
-            position: relative;
             z-index: 2;
+            background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.95) 20%, rgba(255, 255, 255, 0.98) 100%);
         }
 
         .shoe-item-info h4 {
@@ -714,6 +1061,7 @@
             text-transform: uppercase;
             letter-spacing: 1.5px;
             margin-bottom: 0.8rem;
+            display: block;
         }
 
         .shoe-price {
@@ -775,6 +1123,32 @@
             color: var(--sky-blue);
         }
 
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+        }
+
         .footer-bottom {
             padding-top: 2rem;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -805,6 +1179,9 @@
             .shoes-grid {
                 grid-template-columns: repeat(3, 1fr);
             }
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 992px) {
@@ -820,38 +1197,61 @@
         @media (max-width: 768px) {
             nav {
                 padding: 1rem 1.5rem;
-                flex-wrap: wrap;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+
+            .logo {
+                flex: 0 0 auto;
             }
 
             .logo-text {
                 font-size: 1.5rem;
             }
             
+            /* Hide desktop navigation */
             .nav-links {
                 display: none;
             }
 
+            /* Show hamburger menu */
+            .hamburger {
+                display: flex;
+            }
+
             .nav-actions {
-                width: 100%;
-                margin-top: 1rem;
-                justify-content: space-between;
+                width: auto;
+                margin-top: 0;
+                justify-content: flex-end;
                 gap: 1rem;
+                flex: 0 0 auto;
             }
 
             .search-box {
-                flex: 1;
-                width: auto;
-                max-width: none;
+                width: 160px;
+                padding: 0.6rem 1rem 0.6rem 2.5rem;
+                font-size: 0.85rem;
+            }
+
+            .search-icon {
+                left: 0.8rem;
+                font-size: 0.9rem;
+            }
+
+            .cart-icon {
+                display: none;
             }
             
             .hero {
                 flex-direction: column;
                 padding: 8rem 1.5rem 4rem;
                 text-align: center;
+                height: auto;
+                min-height: 100vh;
             }
             
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.8rem;
             }
 
             .hero p {
@@ -867,10 +1267,21 @@
                 width: 100%;
             }
             
+            .shoe-display {
+                margin-top: 3rem;
+                padding-bottom: 4rem;
+            }
+
             .shoe-display img {
-                width: 100%;
-                max-width: 400px;
+                width: 90%;
+                max-width: 350px;
                 height: auto;
+            }
+
+            .shoe-display::after {
+                bottom: -30px;
+                width: 75%;
+                height: 30px;
             }
             
             .product-grid {
@@ -919,7 +1330,7 @@
             }
 
             .shoe-item-image {
-                height: 200px;
+                height: 300px;
             }
             
             .footer-content {
@@ -927,14 +1338,50 @@
                 gap: 2rem;
             }
 
-            .footer {
+            footer {
                 padding: 3rem 1.5rem 1.5rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                margin: 10% auto;
+            }
+
+            .modal-details {
+                padding: 2rem 1.5rem;
+            }
+
+            .modal-details h2 {
+                font-size: 1.8rem;
+            }
+
+            .modal-price {
+                font-size: 2rem;
             }
         }
 
         @media (max-width: 480px) {
+            .hero {
+                padding: 7rem 1rem 3rem;
+            }
+
             .hero h1 {
                 font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .shoe-display img {
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .shoe-display::after {
+                bottom: -20px;
+                width: 70%;
+                height: 25px;
             }
 
             .section-header h2 {
@@ -965,17 +1412,28 @@
     </style>
 </head>
 <body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="#new">New Arrivals</a></li>
+            <li><a href="#men">Men</a></li>
+            <li><a href="#women">Women</a></li>
+            <li><a href="#sale">Sale</a></li>
+        </ul>
+    </div>
+
     <!-- Navigation -->
     <nav>
         <div class="logo">
-            <!-- Replace 'logo.png' with your logo file path -->
-            <img src="1.png" alt="The Good Guys Logo">
+            <div class="logo-text">the good guys!</div>
         </div>
         <ul class="nav-links">
             <li><a href="#new">New Arrivals</a></li>
             <li><a href="#men">Men</a></li>
             <li><a href="#women">Women</a></li>
-            <li><a href="#kids">Kids</a></li>
             <li><a href="#sale">Sale</a></li>
         </ul>
         <div class="nav-actions">
@@ -983,16 +1441,20 @@
                 <i class="fas fa-search search-icon"></i>
                 <input type="text" class="search-box" placeholder="Search shoes...">
             </div>
-            <i class="fas fa-shopping-cart cart-icon"></i>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-tag">Spring Collection 2026</div>
+            <div class="hero-tag">2026 Collection</div>
             <h1>Step Into Excellence</h1>
-            <p>It costs P0.00 to be good but these pairs would cost you something.<br> Make the most out of them. Be in someone else's shoes.</p>
+            <p>It costs ₱0.00 to be good but these pairs would cost you something.<br> Make the most out of them. Be in someone else's shoes.</p>
             <div class="cta-buttons">
                 <button class="btn btn-primary">Shop Now</button>
                 <button class="btn btn-secondary">View Collection</button>
@@ -1000,11 +1462,31 @@
         </div>
         <div class="hero-image">
             <div class="shoe-display">
-                <!-- Replace 'hero-shoe.png' with your hero shoe image -->
-                <img src="onocloud.png" alt="Featured Shoe">
+                <img src="home-pic/adizeroo.png" alt="Featured Shoe">
             </div>
         </div>
     </section>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image">
+                    <img id="modalImage" src="" alt="Product">
+                </div>
+                <div class="modal-details">
+                    <div class="modal-tag" id="modalTag"></div>
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                    <div class="modal-price" id="modalPrice"></div>
+                    <div class="modal-features">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Featured Products -->
     <section class="featured" id="new">
@@ -1014,42 +1496,54 @@
         </div>
 
         <div class="product-grid">
-            <div class="product-card fade-in">
+            <div class="product-card fade-in" 
+                 data-tag="New Arrival" 
+                 data-title="Nike Kobe IX EM Low Protro Purple Dynasty" 
+                 data-description="Experience legendary performance with the Kobe IX EM Low Protro. Featuring responsive cushioning and a lightweight design for explosive movements on court."
+                 data-price="₱00.00"
+                 data-image="just-droped/nike-kobe-iv.png">
                 <div class="product-image">
-                    <!-- Replace with your shoe image -->
-                    <img src="shoe-1.png" alt="Air Flow Pro">
+                    <img src="just-droped/nike-kobe-iv.png" alt="Nike Kobe IX">
                 </div>
                 <div class="product-info">
                     <div class="product-tag">New Arrival</div>
-                    <h3>Air Flow Pro</h3>
-                    <p>Premium running experience with adaptive cushioning</p>
-                    <div class="product-price">$189.99</div>
+                    <h3>Nike Kobe IX EM Low Protro Purple Dynasty</h3>
+                    <p></p>
+                    <div class="product-price">₱00.00</div>
                 </div>
             </div>
 
-            <div class="product-card fade-in">
+            <div class="product-card fade-in"
+                 data-tag="Bestseller"
+                 data-title="Nike Zoom Vomero 5 Photon Dust Black"
+                 data-description="The ultimate running shoe with enhanced Zoom Air cushioning. Designed for maximum comfort during long-distance runs with a sleek, modern aesthetic."
+                 data-price="₱00.00"
+                 data-image="just-droped/zoom-vomero.png">
                 <div class="product-image">
-                    <!-- Replace with your shoe image -->
-                    <img src="shoe-2.png" alt="Urban Stride">
+                    <img src="just-droped/zoom-vomero.png" alt="Nike Zoom Vomero">
                 </div>
                 <div class="product-info">
                     <div class="product-tag">Bestseller</div>
-                    <h3>Urban Stride</h3>
-                    <p>Street-ready style with all-day comfort</p>
-                    <div class="product-price">$159.99</div>
+                    <h3>Nike Zoom Vomero 5 Photon Dust Black</h3>
+                    <p></p>
+                    <div class="product-price">₱00.00</div>
                 </div>
             </div>
 
-            <div class="product-card fade-in">
+            <div class="product-card fade-in"
+                 data-tag="Limited Edition"
+                 data-title="Elite Runner X"
+                 data-description="Maximum performance for serious athletes. Advanced engineering meets premium design for unparalleled speed and comfort."
+                 data-price="₱00.00"
+                 data-image="shoe-3.png">
                 <div class="product-image">
-                    <!-- Replace with your shoe image -->
-                    <img src="shoe-3.png" alt="Elite Runner X">
+                    <img src="just-droped/speedcat-puma.png" alt="Elite Runner X">
                 </div>
                 <div class="product-info">
                     <div class="product-tag">Limited Edition</div>
-                    <h3>Elite Runner X</h3>
-                    <p>Maximum performance for serious athletes</p>
-                    <div class="product-price">$249.99</div>
+                    <h3>Puma Speedcat OG Pelé Yellow Black</h3>
+                    <p></p>
+                    <div class="product-price">₱00.00</div>
                 </div>
             </div>
         </div>
@@ -1061,10 +1555,6 @@
             <h2>Summer Athletics 2026</h2>
             <p>Experience the fusion of cutting-edge technology and timeless design. Built for champions, styled for everyone.</p>
             <button class="btn btn-primary">Explore Collection</button>
-        </div>
-        <div class="collection-image">
-            <!-- Replace with your banner shoe image -->
-            <img src="banner-shoe.png" alt="Summer Athletics Collection">
         </div>
     </div>
 
@@ -1085,8 +1575,8 @@
                 <h3>Basketball</h3>
             </div>
             <div class="category-card fade-in">
-                <i class="fas fa-futbol category-icon"></i>
-                <h3>Soccer</h3>
+                <i class="fas fa-shirt category-icon"></i>
+                <h3>Style</h3>
             </div>
             <div class="category-card fade-in">
                 <i class="fas fa-dumbbell category-icon"></i>
@@ -1103,7 +1593,6 @@
         </div>
 
         <div class="shoes-grid">
-            <!-- Nike Shoes -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="nike-1.png" alt="Nike Air Max 270">
@@ -1111,7 +1600,7 @@
                 <div class="shoe-item-info">
                     <h4>Nike Air Max 270</h4>
                     <p class="brand-tag">Nike</p>
-                    <p class="shoe-price">$150.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
@@ -1122,11 +1611,10 @@
                 <div class="shoe-item-info">
                     <h4>Nike React Infinity</h4>
                     <p class="brand-tag">Nike</p>
-                    <p class="shoe-price">$160.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Adidas Shoes -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="adidas-1.png" alt="Adidas Ultraboost 22">
@@ -1134,7 +1622,7 @@
                 <div class="shoe-item-info">
                     <h4>Adidas Ultraboost 22</h4>
                     <p class="brand-tag">Adidas</p>
-                    <p class="shoe-price">$180.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
@@ -1145,11 +1633,10 @@
                 <div class="shoe-item-info">
                     <h4>Adidas NMD R1</h4>
                     <p class="brand-tag">Adidas</p>
-                    <p class="shoe-price">$140.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Puma Shoes -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="puma-1.png" alt="Puma RS-X">
@@ -1157,7 +1644,7 @@
                 <div class="shoe-item-info">
                     <h4>Puma RS-X</h4>
                     <p class="brand-tag">Puma</p>
-                    <p class="shoe-price">$120.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
@@ -1168,11 +1655,10 @@
                 <div class="shoe-item-info">
                     <h4>Puma Suede Classic</h4>
                     <p class="brand-tag">Puma</p>
-                    <p class="shoe-price">$85.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- New Balance -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="nb-1.png" alt="New Balance 990v5">
@@ -1180,7 +1666,7 @@
                 <div class="shoe-item-info">
                     <h4>New Balance 990v5</h4>
                     <p class="brand-tag">New Balance</p>
-                    <p class="shoe-price">$175.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
@@ -1191,11 +1677,10 @@
                 <div class="shoe-item-info">
                     <h4>New Balance 574</h4>
                     <p class="brand-tag">New Balance</p>
-                    <p class="shoe-price">$90.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Reebok -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="reebok-1.png" alt="Reebok Club C 85">
@@ -1203,11 +1688,10 @@
                 <div class="shoe-item-info">
                     <h4>Reebok Club C 85</h4>
                     <p class="brand-tag">Reebok</p>
-                    <p class="shoe-price">$75.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Converse -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="converse-1.png" alt="Converse Chuck Taylor">
@@ -1215,11 +1699,10 @@
                 <div class="shoe-item-info">
                     <h4>Converse Chuck Taylor</h4>
                     <p class="brand-tag">Converse</p>
-                    <p class="shoe-price">$65.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Vans -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="vans-1.png" alt="Vans Old Skool">
@@ -1227,11 +1710,10 @@
                 <div class="shoe-item-info">
                     <h4>Vans Old Skool</h4>
                     <p class="brand-tag">Vans</p>
-                    <p class="shoe-price">$70.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
 
-            <!-- Under Armour -->
             <div class="shoe-item fade-in">
                 <div class="shoe-item-image">
                     <img src="ua-1.png" alt="Under Armour HOVR">
@@ -1239,7 +1721,7 @@
                 <div class="shoe-item-info">
                     <h4>Under Armour HOVR</h4>
                     <p class="brand-tag">Under Armour</p>
-                    <p class="shoe-price">$130.00</p>
+                    <p class="shoe-price">₱00.00</p>
                 </div>
             </div>
         </div>
@@ -1251,6 +1733,14 @@
             <div class="footer-brand">
                 <h3>THE GOOD GUYS</h3>
                 <p>Elevating your performance and style since bla bla blaaa. We believe in creating footwear that empowers you to be your best self, every single day.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/profile.php?id=61563343993074" target="_blank" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/goodguyfactory?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
             </div>
             <div class="footer-links">
                 <h4>Shop</h4>
@@ -1258,7 +1748,6 @@
                     <li><a href="#">New Arrivals</a></li>
                     <li><a href="#">Men</a></li>
                     <li><a href="#">Women</a></li>
-                    <li><a href="#">Kids</a></li>
                     <li><a href="#">Sale</a></li>
                 </ul>
             </div>
@@ -1266,9 +1755,6 @@
                 <h4>Support</h4>
                 <ul>
                     <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Shipping Info</a></li>
-                    <li><a href="#">Returns</a></li>
-                    <li><a href="#">Size Guide</a></li>
                     <li><a href="#">FAQ</a></li>
                 </ul>
             </div>
@@ -1276,10 +1762,6 @@
                 <h4>Company</h4>
                 <ul>
                     <li><a href="#">About Us</a></li>
-                    <li><a href="#">Careers</a></li>
-                    <li><a href="#">Sustainability</a></li>
-                    <li><a href="#">Press</a></li>
-                    <li><a href="#">Partners</a></li>
                 </ul>
             </div>
         </div>
@@ -1289,6 +1771,38 @@
     </footer>
 
     <script>
+        // Hamburger and Sidebar Toggle
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-links a');
+
+        // Toggle sidebar
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close sidebar when clicking overlay
+        sidebarOverlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Close sidebar when clicking a link
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
         // Scroll Animation Observer
         const observerOptions = {
             threshold: 0.1,
@@ -1330,6 +1844,60 @@
             if (hero && scrolled < window.innerHeight) {
                 hero.style.transform = `translateY(${scrolled * 0.5}px)`;
             }
+        });
+
+        // Modal functionality
+        const modal = document.getElementById('productModal');
+        const closeBtn = document.querySelector('.close');
+        const modalImage = document.getElementById('modalImage');
+        const modalTag = document.getElementById('modalTag');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalPrice = document.getElementById('modalPrice');
+
+        // Add click event to all product cards
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const tag = this.getAttribute('data-tag');
+                const title = this.getAttribute('data-title');
+                const description = this.getAttribute('data-description');
+                const price = this.getAttribute('data-price');
+                const image = this.getAttribute('data-image');
+
+                modalTag.textContent = tag;
+                modalTitle.textContent = title;
+                modalDescription.textContent = description;
+                modalPrice.textContent = price;
+                modalImage.src = image;
+
+                modal.style.display = 'block';
+                setTimeout(() => {
+                    modal.classList.add('active');
+                }, 10);
+            });
+        });
+
+        // Close modal when clicking X
+        closeBtn.addEventListener('click', function() {
+            modal.classList.remove('active');
+            setTimeout(() => {
+                modal.style.display = 'none';
+            }, 200);
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.classList.remove('active');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 200);
+            }
+        });
+
+        // Prevent modal close when clicking inside modal content
+        document.querySelector('.modal-content').addEventListener('click', function(event) {
+            event.stopPropagation();
         });
     </script>
 </body>
