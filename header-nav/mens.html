@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Men's Collection - The Good Guys</title>
+
+    <!-- Performance: Preconnect to external domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Fonts with display=swap to prevent render blocking -->
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ========================
+           CSS VARIABLES
+        ======================== */
+        :root {
+            --primary-blue: #0066FF;
+            --deep-blue: #0047AB;
+            --sky-blue: #4DA6FF;
+            --ice-blue: #E6F2FF;
+            --pure-white: #FFFFFF;
+            --off-white: #F8FAFB;
+            --dark-text: #0A1128;
+            --gray-text: #5A6578;
+        }
+
+        /* ========================
+           RESET & BASE
+        ======================== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Epilogue', sans-serif;
+            color: var(--dark-text);
+            overflow-x: hidden;
+            background: var(--pure-white);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        /* ========================
+           NAVIGATION
+        ======================== */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); opacity: 0; }
+            to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .logo-text {
+            font-family: 'Cooper Black', 'Arial Black', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #2B5F8F;
+            letter-spacing: -2px;
+            text-transform: lowercase;
+            font-style: italic;
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.1), 3px 3px 0px rgba(0,0,0,0.08);
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%,100% { filter: drop-shadow(0 0 8px rgba(43,95,143,0.3)); }
+            50%     { filter: drop-shadow(0 0 20px rgba(43,95,143,0.6)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark-text);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a.active,
+        .nav-links a:hover { color: var(--primary-blue); }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a.active::after,
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .search-container { position: relative; }
+
+        .search-box {
+            padding: 0.7rem 1.5rem 0.7rem 3rem;
+            border: 2px solid var(--ice-blue);
+            border-radius: 50px;
+            background: var(--off-white);
+            font-family: 'Epilogue', sans-serif;
+            font-size: 0.95rem;
+            width: 250px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .search-box:focus {
+            border-color: var(--primary-blue);
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,102,255,0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-text);
+            pointer-events: none;
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-text);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(8px,8px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(7px,-7px); }
+
+        /* ========================
+           SIDEBAR
+        ======================== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--pure-white);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.1);
+            z-index: 1500;
+            transition: right 0.4s cubic-bezier(0.4,0,0.2,1);
+            padding: 6rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.active { right: 0; }
+
+        .sidebar-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active { opacity: 1; visibility: visible; }
+
+        .sidebar-links { list-style: none; }
+
+        .sidebar-links a {
+            display: block;
+            padding: 1.2rem 1rem;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--ice-blue);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-links a:hover {
+            color: var(--primary-blue);
+            padding-left: 1.5rem;
+            background: var(--ice-blue);
+        }
+
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s ease;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Epilogue', sans-serif;
+            padding: 0;
+        }
+        .back-btn:hover { color: white; }
+        .back-btn i { font-size: 0.85rem; transition: transform 0.3s ease; }
+        .back-btn:hover i { transform: translateX(-4px); }
+
+        /* ========================
+           HERO BANNER - MEN'S
+        ======================== */
+        .men-hero {
+            min-height: 60vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 4rem 4rem;
+            background: linear-gradient(135deg, #0A1128 0%, #0047AB 60%, #0066FF 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .men-hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 70%;
+            height: 160%;
+            background: radial-gradient(circle, rgba(77,166,255,0.15) 0%, transparent 65%);
+            /* No animation here - reduces repaints */
+        }
+
+        /* Decorative grid lines - pure CSS, no JS */
+        .men-hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .men-hero-content {
+            z-index: 2;
+            max-width: 700px;
+            animation: fadeInLeft 0.9s ease-out both;
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+
+        .men-hero-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--sky-blue);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .men-hero h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 5rem;
+            font-weight: 700;
+            line-height: 1.05;
+            color: white;
+            margin-bottom: 1.5rem;
+        }
+
+        .men-hero h1 span {
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .men-hero p {
+            font-size: 1.15rem;
+            color: rgba(255,255,255,0.75);
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+        }
+
+        /* ========================
+           BUTTONS
+        ======================== */
+        .btn {
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-family: 'Epilogue', sans-serif;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            color: white;
+            box-shadow: 0 10px 30px rgba(0,102,255,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,102,255,0.45);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: white;
+            border: 2px solid rgba(255,255,255,0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: white;
+            transform: translateY(-3px);
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        /* ========================
+           FILTER BAR
+        ======================== */
+        .filter-bar {
+            position: sticky;
+            top: 75px;
+            z-index: 900;
+            background: rgba(255,255,255,0.97);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(0,102,255,0.08);
+            padding: 1rem 4rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--gray-text);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-right: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.3rem;
+            border: 2px solid var(--ice-blue);
+            border-radius: 50px;
+            background: transparent;
+            font-family: 'Epilogue', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--gray-text);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: white;
+        }
+
+        .filter-count {
+            margin-left: auto;
+            font-size: 0.9rem;
+            color: var(--gray-text);
+            font-weight: 500;
+        }
+
+        /* ========================
+           MAIN COLLECTION
+        ======================== */
+        .collection-section {
+            padding: 4rem 4rem 6rem;
+            background: var(--off-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        /* ========================
+           PRODUCT GRID
+        ======================== */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            /* Use will-change only on hover to save memory */
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 45px rgba(0,102,255,0.18);
+        }
+
+        .product-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 3;
+            padding: 0.3rem 0.9rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .badge-new     { background: var(--primary-blue); color: white; }
+        .badge-sale    { background: #FF3B3B; color: white; }
+        .badge-hot     { background: #FF8C00; color: white; }
+        .badge-limited { background: var(--dark-text); color: white; }
+
+        .product-image-wrap {
+            height: 240px;
+            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image-wrap img {
+            width: 85%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.35s ease;
+        }
+
+        .product-card:hover .product-image-wrap img {
+            transform: scale(1.06);
+        }
+
+        /* Quick view overlay */
+        .quick-view {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            background: rgba(0,102,255,0.9);
+            color: white;
+            text-align: center;
+            padding: 0.8rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: bottom 0.3s ease;
+        }
+
+        .product-card:hover .quick-view { bottom: 0; }
+
+        .product-info {
+            padding: 1.3rem 1.5rem 1.5rem;
+        }
+
+        .product-brand {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.4rem;
+        }
+
+        .product-info h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .product-bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .product-price {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .product-price .original {
+            font-size: 0.9rem;
+            color: var(--gray-text);
+            text-decoration: line-through;
+            margin-right: 0.5rem;
+            font-weight: 400;
+        }
+
+        /* Star rating */
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.8rem;
+            color: var(--gray-text);
+        }
+
+        .stars { color: #FFB800; font-size: 0.85rem; }
+
+        /* ========================
+           FEATURED HIGHLIGHT BANNER
+        ======================== */
+        .highlight-banner {
+            margin: 0 4rem 4rem;
+            background: linear-gradient(135deg, var(--dark-text) 0%, #1a2a4a 100%);
+            border-radius: 28px;
+            padding: 3.5rem 4rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .highlight-banner::before {
+            content: '';
+            position: absolute;
+            top: -40%;
+            left: -5%;
+            width: 50%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0,102,255,0.2) 0%, transparent 60%);
+        }
+
+        .highlight-text { z-index: 2; max-width: 420px; }
+
+        .highlight-text .section-tag { color: var(--sky-blue); }
+
+        .highlight-text h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1.1;
+            margin: 0.5rem 0 1rem;
+        }
+
+        .highlight-text p {
+            color: rgba(255,255,255,0.7);
+            line-height: 1.7;
+            margin-bottom: 1.8rem;
+        }
+
+        .highlight-stats {
+            display: flex;
+            gap: 3rem;
+            z-index: 2;
+        }
+
+        .stat { text-align: center; }
+
+        .stat-number {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: white;
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.6);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 0.3rem;
+        }
+
+        /* ========================
+           MODAL
+        ======================== */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            inset: 0;
+            background-color: rgba(0,0,0,0);
+            transition: background-color 0.2s ease;
+        }
+
+        .modal.active { background-color: rgba(0,0,0,0.85); }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            border-radius: 28px;
+            width: 90%;
+            max-width: 900px;
+            position: relative;
+            transform: scale(0.95);
+            opacity: 0;
+            transition: transform 0.2s ease, opacity 0.2s ease;
+            box-shadow: 0 40px 80px rgba(0,102,255,0.25);
+            overflow: hidden;
+            /* will-change removed - only applied when needed */
+        }
+
+        .modal.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            color: var(--dark-text);
+            font-size: 1.8rem;
+            font-weight: 300;
+            cursor: pointer;
+            z-index: 10;
+            width: 46px;
+            height: 46px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            line-height: 1;
+        }
+
+        .close:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        .modal-body {
+            display: grid;
+            grid-template-columns: 1.1fr 1fr;
+        }
+
+        .modal-image-wrap {
+            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+            padding: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .modal-image-wrap img {
+            width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            filter: drop-shadow(0 20px 40px rgba(0,102,255,0.25));
+        }
+
+        .modal-details {
+            padding: 3.5rem 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.8rem;
+        }
+
+        .modal-details h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .modal-details p {
+            color: var(--gray-text);
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        .modal-price {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 2rem;
+        }
+
+        /* ========================
+           FOOTER
+        ======================== */
+        footer {
+            background: var(--dark-text);
+            color: white;
+            padding: 5rem 4rem 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-brand p { color: rgba(255,255,255,0.7); line-height: 1.8; }
+
+        .footer-links h4 { font-size: 1.1rem; margin-bottom: 1.5rem; font-weight: 600; }
+
+        .footer-links ul { list-style: none; }
+
+        .footer-links li { margin-bottom: 0.8rem; }
+
+        .footer-links a {
+            color: rgba(255,255,255,0.7);
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--sky-blue); }
+
+        .footer-socials { display: flex; gap: 1.5rem; margin-top: 1.5rem; }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,102,255,0.3);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.9rem;
+        }
+
+        /* ========================
+           FADE-IN SCROLL ANIMATION
+        ======================== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        /* ========================
+           RESPONSIVE
+        ======================== */
+        @media (max-width: 1200px) {
+            .product-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (max-width: 992px) {
+            .product-grid { grid-template-columns: repeat(2, 1fr); }
+            .highlight-banner { flex-direction: column; text-align: center; }
+            .highlight-stats { justify-content: center; }
+            .modal-body { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+                flex-wrap: nowrap;
+                justify-content: space-between;
+            }
+
+            .logo-text { font-size: 1.5rem; }
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+
+            .nav-actions { gap: 1rem; }
+
+            .search-box {
+                width: 150px;
+                padding: 0.6rem 1rem 0.6rem 2.5rem;
+                font-size: 0.85rem;
+            }
+
+            .men-hero {
+                padding: 7rem 1.5rem 3.5rem;
+                min-height: auto;
+            }
+
+            .men-hero h1 { font-size: 3rem; }
+            .men-hero p  { font-size: 1rem; }
+
+            .cta-buttons { flex-direction: column; }
+            .btn { width: 100%; text-align: center; }
+
+            .filter-bar { padding: 1rem 1.5rem; }
+            .filter-count { display: none; }
+
+            .collection-section { padding: 3rem 1.5rem 4rem; }
+            .highlight-banner { margin: 0 1.5rem 3rem; padding: 2.5rem 2rem; }
+            .highlight-text h2 { font-size: 2rem; }
+            .highlight-stats { gap: 2rem; }
+
+            .product-grid { grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+            .product-image-wrap { height: 180px; }
+            .product-info { padding: 1rem; }
+
+            footer { padding: 3rem 1.5rem 1.5rem; }
+            .footer-content { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .men-hero h1 { font-size: 2.2rem; }
+            .product-grid { grid-template-columns: 1fr; }
+            .product-image-wrap { height: 240px; }
+            .stat-number { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="mens.html">Men</a></li>
+            <li><a href="womens.html">Women</a></li>
+            <li><a href="../all-shoes.html">All Shoes</a></li>
+            <li><a href="#sale">Sale</a></li>
+        </ul>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <a href="../index.html" class="logo-text">the good guys!</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="new-arrivals.html">New Arrivals</a></li>
+            <li><a href="mens.html" class="active">Men</a></li>
+            <li><a href="womens.html">Women</a></li>
+            <li><a href="../all-shoes.html">All Shoes</a></li>
+        </ul>
+        <div class="nav-actions">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-box" placeholder="Search shoes..." id="searchInput">
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Men's Hero Banner -->
+    <section class="men-hero">
+        <div class="men-hero-content">
+            <button class="back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+            <div class="men-hero-tag">Men's Collection 2026</div>
+            <h1>Built for the<br><span>Bold</span> Ones.</h1>
+            <p>Engineered for performance. Designed for those who don't settle. From court to street — own every step.</p>
+            <div class="cta-buttons">
+                <a href="#collection" class="btn btn-primary">Shop Men's</a>
+                <a href="../all-shoes.html" class="btn btn-outline">View All Shoes</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="filterBar">
+        <span class="filter-label">Filter:</span>
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="running">Running</button>
+        <button class="filter-btn" data-filter="basketball">Basketball</button>
+        <button class="filter-btn" data-filter="lifestyle">Lifestyle</button>
+        <button class="filter-btn" data-filter="sale">Sale</button>
+        <span class="filter-count" id="filterCount">Showing all items</span>
+    </div>
+
+    <!-- Main Collection -->
+    <section class="collection-section">
+        <div class="section-header fade-in">
+            <div class="section-tag">Men's Picks</div>
+            <h2>The Full Collection</h2>
+        </div>
+
+        <div class="product-grid" id="productGrid">
+
+            <!-- Card 1 -->
+            <div class="product-card fade-in"
+                 data-category="basketball"
+                 data-tag="New Arrival"
+                 data-title="Nike Kobe IX EM Low Protro Purple Dynasty"
+                 data-description="Experience legendary performance with the Kobe IX EM Low Protro. Featuring responsive cushioning and a lightweight design for explosive movements on court."
+                 data-price="₱00.00"
+                 data-image="just-droped/nike-kobe-iv.png">
+                <div class="product-badge badge-new">New</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/nike-kobe-iv.png" alt="Nike Kobe IX EM Low" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Nike</div>
+                    <h3>Kobe IX EM Low Protro Purple Dynasty</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="product-card fade-in"
+                 data-category="running"
+                 data-tag="Bestseller"
+                 data-title="Nike Zoom Vomero 5 Photon Dust Black"
+                 data-description="The ultimate running shoe with enhanced Zoom Air cushioning. Designed for maximum comfort during long-distance runs with a sleek, modern aesthetic."
+                 data-price="₱00.00"
+                 data-image="just-droped/zoom-vomero.png">
+                <div class="product-badge badge-hot">Hot</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/zoom-vomero.png" alt="Nike Zoom Vomero 5" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Nike</div>
+                    <h3>Zoom Vomero 5 Photon Dust Black</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="product-card fade-in"
+                 data-category="lifestyle"
+                 data-tag="Limited Edition"
+                 data-title="Puma Speedcat OG Pelé Yellow Black"
+                 data-description="Maximum performance for serious athletes. Advanced engineering meets premium design for unparalleled speed and comfort on any surface."
+                 data-price="₱00.00"
+                 data-image="just-droped/speedcat-puma.png">
+                <div class="product-badge badge-limited">Limited</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/speedcat-puma.png" alt="Puma Speedcat OG" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Puma</div>
+                    <h3>Speedcat OG Pelé Yellow Black</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★☆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 4 (placeholder — add your image) -->
+            <div class="product-card fade-in"
+                 data-category="running"
+                 data-tag="New Arrival"
+                 data-title="Adidas Ultraboost 25 Core Black"
+                 data-description="Responsive Boost midsole technology returns energy with every stride. Lightweight Primeknit upper adapts to the shape of your foot for a sock-like fit."
+                 data-price="₱00.00"
+                 data-image="home-pic/adizeroo.png">
+                <div class="product-badge badge-new">New</div>
+                <div class="product-image-wrap">
+                    <img src="home-pic/adizeroo.png" alt="Adidas Ultraboost 25" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Adidas</div>
+                    <h3>Ultraboost 25 Core Black</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="product-card fade-in"
+                 data-category="basketball"
+                 data-tag="Sale"
+                 data-title="Jordan Air 1 Retro High OG Chicago"
+                 data-description="The shoe that started it all. Iconic silhouette, premium leather upper, and classic colorway that never goes out of style. A must-have for any collection."
+                 data-price="₱00.00"
+                 data-image="just-droped/nike-kobe-iv.png">
+                <div class="product-badge badge-sale">Sale</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/nike-kobe-iv.png" alt="Jordan Air 1 Retro" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Jordan</div>
+                    <h3>Air 1 Retro High OG Chicago</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">
+                            <span class="original">₱00.00</span>₱00.00
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="product-card fade-in"
+                 data-category="lifestyle"
+                 data-tag="Bestseller"
+                 data-title="New Balance 990v6 Made in USA"
+                 data-description="Crafted in the USA with premium materials. The 990v6 blends heritage aesthetics with modern comfort, making it the ultimate everyday sneaker."
+                 data-price="₱00.00"
+                 data-image="just-droped/zoom-vomero.png">
+                <div class="product-badge badge-hot">Top Pick</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/zoom-vomero.png" alt="New Balance 990v6" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">New Balance</div>
+                    <h3>990v6 Made in USA Grey</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="product-card fade-in"
+                 data-category="running"
+                 data-tag="New Arrival"
+                 data-title="Puma Deviate Nitro 3 Lime Pow"
+                 data-description="Powered by NITRO™ foam technology with carbon-infused plate. Engineered for speed, the Deviate Nitro 3 delivers maximum energy return on race day."
+                 data-price="₱00.00"
+                 data-image="just-droped/speedcat-puma.png">
+                <div class="product-badge badge-new">New</div>
+                <div class="product-image-wrap">
+                    <img src="just-droped/speedcat-puma.png" alt="Puma Deviate Nitro 3" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Puma</div>
+                    <h3>Deviate Nitro 3 Lime Pow</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">₱00.00</div>
+                        <div class="rating">
+                            <span class="stars">★★★★☆</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="product-card fade-in"
+                 data-category="lifestyle"
+                 data-tag="Sale"
+                 data-title="Adidas Samba OG Cloud White"
+                 data-description="The Samba's iconic gum sole and suede upper have made it a streetwear staple for decades. Clean, versatile, and timeless — it goes with everything."
+                 data-price="₱00.00"
+                 data-image="home-pic/adizeroo.png">
+                <div class="product-badge badge-sale">Sale</div>
+                <div class="product-image-wrap">
+                    <img src="home-pic/adizeroo.png" alt="Adidas Samba OG" loading="lazy">
+                    <div class="quick-view">Quick View</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-brand">Adidas</div>
+                    <h3>Samba OG Cloud White</h3>
+                    <div class="product-bottom">
+                        <div class="product-price">
+                            <span class="original">₱00.00</span>₱00.00
+                        </div>
+                        <div class="rating">
+                            <span class="stars">★★★★★</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end product-grid -->
+
+    </section>
+
+    <!-- Product Modal -->
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body">
+                <div class="modal-image-wrap">
+                    <img id="modalImage" src="" alt="Product">
+                </div>
+                <div class="modal-details">
+                    <div class="modal-tag" id="modalTag"></div>
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalDescription"></p>
+                    <div class="modal-price" id="modalPrice"></div>
+                    <div class="cta-buttons">
+                        <a href="../navigations/contactus.html" class="btn btn-primary">Inquire Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>THE GOOD GUYS</h3>
+                <p>Elevating your performance and style. We believe in creating footwear that empowers you to be your best self, every single day.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/profile.php?id=61563343993074" target="_blank" rel="noopener" class="social-icon" aria-label="Facebook">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/goodguyfactory" target="_blank" rel="noopener" class="social-icon" aria-label="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Shop</h4>
+                <ul>
+                    <li><a href="new-arrivals.html">New Arrivals</a></li>
+                    <li><a href="mens.html">Men</a></li>
+                    <li><a href="#">Women</a></li>
+                    <li><a href="#">Sale</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="../navigations/contactus.html">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="../navigations/about.html">About Us</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Good Guys. All rights reserved. | Designed with passion for excellence</p>
+        </div>
+    </footer>
+
+    <script>
+        /* ========================
+           HAMBURGER / SIDEBAR
+        ======================== */
+        const hamburger       = document.getElementById('hamburger');
+        const sidebar         = document.getElementById('sidebar');
+        const sidebarOverlay  = document.getElementById('sidebarOverlay');
+        const sidebarLinks    = document.querySelectorAll('.sidebar-links a');
+
+        hamburger.addEventListener('click', () => {
+            const open = sidebar.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = open ? 'hidden' : '';
+        });
+
+        sidebarOverlay.addEventListener('click', closeSidebar);
+        sidebarLinks.forEach(l => l.addEventListener('click', closeSidebar));
+
+        function closeSidebar() {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        /* ========================
+           SCROLL FADE-IN
+           (IntersectionObserver — no layout thrashing)
+        ======================== */
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    observer.unobserve(entry.target); // stop watching once visible
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        /* ========================
+           FILTER FUNCTIONALITY
+        ======================== */
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const cards       = document.querySelectorAll('.product-card');
+        const filterCount = document.getElementById('filterCount');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const filter = btn.dataset.filter;
+                let visible = 0;
+
+                cards.forEach(card => {
+                    const match = filter === 'all' || card.dataset.category === filter;
+                    card.style.display = match ? '' : 'none';
+                    if (match) visible++;
+                });
+
+                filterCount.textContent = filter === 'all'
+                    ? 'Showing all items'
+                    : `Showing ${visible} item${visible !== 1 ? 's' : ''}`;
+            });
+        });
+
+        /* ========================
+           SEARCH FILTER
+        ======================== */
+        document.getElementById('searchInput').addEventListener('input', function () {
+            const q = this.value.toLowerCase().trim();
+            cards.forEach(card => {
+                const title = card.dataset.title.toLowerCase();
+                card.style.display = (!q || title.includes(q)) ? '' : 'none';
+            });
+        });
+
+        /* ========================
+           MODAL
+        ======================== */
+        const modal      = document.getElementById('productModal');
+        const closeBtn   = document.querySelector('.close');
+        const modalImg   = document.getElementById('modalImage');
+        const modalTag   = document.getElementById('modalTag');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc  = document.getElementById('modalDescription');
+        const modalPrice = document.getElementById('modalPrice');
+
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                modalTag.textContent   = card.dataset.tag;
+                modalTitle.textContent = card.dataset.title;
+                modalDesc.textContent  = card.dataset.description;
+                modalPrice.textContent = card.dataset.price;
+                modalImg.src           = card.dataset.image;
+                modalImg.alt           = card.dataset.title;
+
+                modal.style.display = 'block';
+                requestAnimationFrame(() => modal.classList.add('active'));
+            });
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+            setTimeout(() => { modal.style.display = 'none'; }, 200);
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+
+        window.addEventListener('click', e => {
+            if (e.target === modal) closeModal();
+        });
+
+        document.querySelector('.modal-content').addEventListener('click', e => e.stopPropagation());
+
+        /* ========================
+           SMOOTH SCROLL (#anchors)
+        ======================== */
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', function (e) {
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Shoes - The Good Guys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0066FF;
+            --deep-blue: #0047AB;
+            --sky-blue: #4DA6FF;
+            --ice-blue: #E6F2FF;
+            --pure-white: #FFFFFF;
+            --off-white: #F8FAFB;
+            --dark-text: #0A1128;
+            --gray-text: #5A6578;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Epilogue', sans-serif;
+            color: var(--dark-text);
+            overflow-x: hidden;
+            background: var(--pure-white);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+        }
+
+        .logo-text {
+            font-family: 'Cooper Black', 'Arial Black', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #2B5F8F;
+            letter-spacing: -2px;
+            text-transform: lowercase;
+            font-style: italic;
+            text-shadow: 
+                2px 2px 0px rgba(0, 0, 0, 0.1),
+                3px 3px 0px rgba(0, 0, 0, 0.08);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-text);
+            border-radius: 2px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--pure-white);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 1500;
+            transition: right 0.4s;
+            padding: 6rem 2rem 2rem;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-links a {
+            display: block;
+            padding: 1.2rem 1rem;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            border-bottom: 1px solid var(--ice-blue);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 12rem 4rem 4rem;
+            background: linear-gradient(135deg, var(--ice-blue) 0%, var(--pure-white) 100%);
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--dark-text) 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--gray-text);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+
+        /* Search Section */
+        .search-section {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.2rem 1.5rem 1.2rem 3.5rem;
+            border: 2px solid var(--ice-blue);
+            border-radius: 50px;
+            background: white;
+            font-family: 'Epilogue', sans-serif;
+            font-size: 1.1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-blue);
+            box-shadow: 0 5px 30px rgba(0, 102, 255, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.3rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray-text);
+            font-size: 1.2rem;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            padding: 3rem 4rem 1rem;
+            background: var(--pure-white);
+        }
+
+        .filter-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.8rem 2rem;
+            border: 2px solid var(--ice-blue);
+            background: white;
+            border-radius: 50px;
+            font-family: 'Epilogue', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
+        }
+
+        /* Shoes Grid */
+        .shoes-section {
+            padding: 3rem 4rem 6rem;
+            background: var(--pure-white);
+        }
+
+        .shoes-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .shoe-card {
+            background: var(--off-white);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .shoe-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 102, 255, 0.15);
+        }
+
+        .shoe-image {
+            width: 100%;
+            height: 280px;
+            background: linear-gradient(135deg, #e8f4ff 0%, #f0f8ff 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shoe-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: transform 0.3s;
+        }
+
+        .shoe-card:hover .shoe-image img {
+            transform: scale(1.05);
+        }
+
+        .shoe-info {
+            padding: 1.5rem;
+        }
+
+        .shoe-brand {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .shoe-name {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+        }
+
+        .shoe-price {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--gray-text);
+        }
+
+        .no-results i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .no-results h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            color: var(--dark-text);
+            margin-bottom: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-text);
+            color: white;
+            padding: 5rem 4rem 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--sky-blue);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-blue);
+            transform: translateY(-5px);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header {
+                padding: 8rem 1.5rem 3rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .filter-section,
+            .shoes-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .shoes-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            footer {
+                padding: 3rem 1.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="all-shoes.html">All Shoes</a></li>
+        </ul>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <a href="index.html" class="logo-text">the good guys!</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="all-shoes.html">All Shoes</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <h1>All Shoes</h1>
+        <p>Browse our complete collection of premium footwear</p>
+        
+        <!-- Search Box -->
+        <div class="search-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" class="search-input" id="searchInput" placeholder="Search for shoes...">
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter Section -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <button class="filter-btn active" data-brand="all">All Brands</button>
+            <button class="filter-btn" data-brand="nike">Nike</button>
+            <button class="filter-btn" data-brand="adidas">Adidas</button>
+            <button class="filter-btn" data-brand="puma">Puma</button>
+            <button class="filter-btn" data-brand="new balance">New Balance</button>
+            <button class="filter-btn" data-brand="reebok">Asics</button>
+            <button class="filter-btn" data-brand="converse">Converse</button>
+            <button class="filter-btn" data-brand="vans">Golden Goose</button>
+            <button class="filter-btn" data-brand="vans">jordan</button>
+            <button class="filter-btn" data-brand="vans">On Running</button>
+            <button class="filter-btn" data-brand="vans">Onitsuka Tiger</button>
+            <button class="filter-btn" data-brand="vans">Salomon</button>
+            <button class="filter-btn" data-brand="vans">Veja</button>
+            <button class="filter-btn" data-brand="vans">Yeezy</button>
+        </div>
+    </section>
+
+    <!-- Shoes Grid -->
+    <section class="shoes-section">
+        <div class="shoes-grid" id="shoesGrid">
+            <!-- Shoes will be dynamically populated here -->
+        </div>
+        <div class="no-results" id="noResults" style="display: none;">
+            <i class="fas fa-search"></i>
+            <h3>No shoes found</h3>
+            <p>Try adjusting your search or filter</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>THE GOOD GUYS</h3>
+                <p>Your trusted source for authentic footwear. Operated with passion, dedication, and a commitment to bringing you the best shoes at the best prices.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/profile.php?id=61563343993074" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/goodguyfactory?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Good Guys. All rights reserved. | Crafted with passion for footwear excellence</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample shoe database - Add all your 50-70 shoes here
+        const shoesDatabase = [
+            // Nike
+            { brand: "Nike", name: "Nike Kobe IX EM Low Protro Purple Dynasty", price: "₱00.00", image: "just-droped/nike-kobe-iv.png" },
+            { brand: "Nike", name: "Nike Zoom Vomero 5 Photon Dust Black", price: "₱00.00", image: "just-droped/zoom-vomero.png" },
+            { brand: "Nike", name: "Nike Air Max 90", price: "₱00.00", image: "nike-1.png" },
+            { brand: "Nike", name: "Nike React Infinity", price: "₱00.00", image: "nike-2.png" },
+            
+            // Adidas
+            { brand: "Adidas", name: "Adidas Ultraboost 22", price: "₱00.00", image: "adidas-1.png" },
+            { brand: "Adidas", name: "Adidas NMD R1", price: "₱00.00", image: "adidas-2.png" },
+            
+            // Puma
+            { brand: "Puma", name: "Puma Speedcat OG Pelé Yellow Black", price: "₱00.00", image: "just-droped/speedcat-puma.png" },
+            { brand: "Puma", name: "Puma RS-X", price: "₱00.00", image: "puma-1.png" },
+            { brand: "Puma", name: "Puma Suede Classic", price: "₱00.00", image: "puma-2.png" },
+            
+            // New Balance
+            { brand: "New Balance", name: "New Balance 990v5", price: "₱00.00", image: "nb-1.png" },
+            { brand: "New Balance", name: "New Balance 574", price: "₱00.00", image: "nb-2.png" },
+            
+            // Reebok
+            { brand: "Reebok", name: "Reebok Club C 85", price: "₱00.00", image: "reebok-1.png" },
+            
+            // Converse
+            { brand: "Converse", name: "Converse Chuck Taylor All Star", price: "₱00.00", image: "converse-1.png" },
+            
+            // Vans
+            { brand: "Vans", name: "Vans Old Skool", price: "₱00.00", image: "vans-1.png" },
+            
+            // Under Armour
+            { brand: "Under Armour", name: "Under Armour HOVR Phantom", price: "₱00.00", image: "ua-1.png" },
+
+            // Add more shoes here following the same format
+            // You can add 50-70 shoes total
+        ];
+
+        let currentFilter = 'all';
+
+        // Render shoes
+        function renderShoes(shoes) {
+            const grid = document.getElementById('shoesGrid');
+            const noResults = document.getElementById('noResults');
+            
+            grid.innerHTML = '';
+            
+            if (shoes.length === 0) {
+                grid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+            
+            grid.style.display = 'grid';
+            noResults.style.display = 'none';
+            
+            shoes.forEach(shoe => {
+                const card = `
+                    <div class="shoe-card">
+                        <div class="shoe-image">
+                            <img src="${shoe.image}" alt="${shoe.name}" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'300\' height=\'300\'%3E%3Crect fill=\'%23e8f4ff\' width=\'300\' height=\'300\'/%3E%3Ctext x=\'50%25\' y=\'50%25\' text-anchor=\'middle\' dy=\'.3em\' fill=\'%230066FF\' font-family=\'Arial\' font-size=\'18\'%3EImage%3C/text%3E%3C/svg%3E'">
+                        </div>
+                        <div class="shoe-info">
+                            <div class="shoe-brand">${shoe.brand}</div>
+                            <div class="shoe-name">${shoe.name}</div>
+                            <div class="shoe-price">${shoe.price}</div>
+                        </div>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // Search function
+        function searchShoes(query) {
+            query = query.toLowerCase();
+            let filtered = shoesDatabase;
+            
+            // Apply brand filter
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(shoe => 
+                    shoe.brand.toLowerCase() === currentFilter
+                );
+            }
+            
+            // Apply search query
+            if (query) {
+                filtered = filtered.filter(shoe => 
+                    shoe.name.toLowerCase().includes(query) ||
+                    shoe.brand.toLowerCase().includes(query)
+                );
+            }
+            
+            renderShoes(filtered);
+        }
+
+        // Search input event
+        document.getElementById('searchInput').addEventListener('input', (e) => {
+            searchShoes(e.target.value);
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                currentFilter = this.dataset.brand;
+                searchShoes(document.getElementById('searchInput').value);
+            });
+        });
+
+        // Hamburger menu
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+        });
+
+        sidebarOverlay.addEventListener('click', () => {
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+        });
+
+        // Initial render
+        renderShoes(shoesDatabase);
+    </script>
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - The Good Guys</title>
+    <link href="https://fonts.googleapis.com/css2?family=Clash+Display:wght@400;600;700&family=Epilogue:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-blue: #0066FF;
+            --deep-blue: #0047AB;
+            --sky-blue: #4DA6FF;
+            --ice-blue: #E6F2FF;
+            --pure-white: #FFFFFF;
+            --off-white: #F8FAFB;
+            --dark-text: #0A1128;
+            --gray-text: #5A6578;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Epilogue', sans-serif;
+            color: var(--dark-text);
+            overflow-x: hidden;
+            background: var(--pure-white);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 1.5rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 102, 255, 0.1);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-text {
+            font-family: 'Cooper Black', 'Arial Black', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #2B5F8F;
+            letter-spacing: -2px;
+            text-transform: lowercase;
+            position: relative;
+            font-style: italic;
+            text-shadow: 
+                2px 2px 0px rgba(0, 0, 0, 0.1),
+                3px 3px 0px rgba(0, 0, 0, 0.08);
+            animation: glow 3s ease-in-out infinite;
+            text-decoration: none;
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(43, 95, 143, 0.3)); }
+            50% { filter: drop-shadow(0 0 20px rgba(43, 95, 143, 0.6)); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-blue);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            z-index: 2000;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--dark-text);
+            transition: all 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 280px;
+            height: 100vh;
+            background: var(--pure-white);
+            box-shadow: -5px 0 25px rgba(0, 0, 0, 0.1);
+            z-index: 1500;
+            transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 6rem 2rem 2rem;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1400;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-links {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar-links li {
+            margin-bottom: 0;
+        }
+
+        .sidebar-links a {
+            display: block;
+            padding: 1.2rem 1rem;
+            text-decoration: none;
+            color: var(--dark-text);
+            font-weight: 500;
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--ice-blue);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .sidebar-links a:hover {
+            color: var(--primary-blue);
+            padding-left: 1.5rem;
+            background: var(--ice-blue);
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 12rem 4rem 6rem;
+            background: linear-gradient(135deg, var(--ice-blue) 0%, var(--pure-white) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, transparent 70%);
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(50px, -50px) rotate(10deg); }
+            66% { transform: translate(-30px, 30px) rotate(-10deg); }
+        }
+
+        .page-header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .page-tag {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, var(--dark-text) 0%, var(--primary-blue) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: var(--gray-text);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* Mission Section */
+        .mission-section {
+            padding: 6rem 4rem;
+            background: var(--pure-white);
+        }
+
+        .mission-container {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .mission-container h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 2rem;
+        }
+
+        .mission-container p {
+            color: var(--gray-text);
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+            font-size: 1.15rem;
+        }
+
+        /* Why Choose Section */
+        .why-choose-section {
+            padding: 6rem 4rem;
+            background: var(--pure-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--primary-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+        }
+
+        .why-grid {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2.5rem;
+        }
+
+        .why-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2rem;
+            background: var(--off-white);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .why-item:hover {
+            background: var(--ice-blue);
+            transform: translateX(10px);
+        }
+
+        .why-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-blue), var(--deep-blue));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .why-content h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0.8rem;
+        }
+
+        .why-content p {
+            color: var(--gray-text);
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 4rem;
+            margin: 4rem;
+            background: linear-gradient(135deg, var(--deep-blue) 0%, var(--primary-blue) 100%);
+            border-radius: 32px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            max-width: 700px;
+            margin: 0 auto;
+            color: white;
+        }
+
+        .cta-content h2 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .cta-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+
+        .btn-cta {
+            padding: 1.2rem 3rem;
+            background: white;
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 50px;
+            font-family: 'Epilogue', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark-text);
+            color: white;
+            padding: 5rem 4rem 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand h3 {
+            font-family: 'Clash Display', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--sky-blue), var(--primary-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.8;
+        }
+
+        .footer-links h4 {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--sky-blue);
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .social-icon:hover {
+            background: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 102, 255, 0.3);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .why-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .logo-text {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .page-header {
+                padding: 8rem 1.5rem 4rem;
+            }
+
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .mission-section,
+            .why-choose-section {
+                padding: 3rem 1.5rem;
+            }
+
+            .mission-container h2 {
+                font-size: 2rem;
+            }
+
+            .cta-section {
+                margin: 1.5rem;
+                padding: 3rem 1.5rem;
+            }
+
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            footer {
+                padding: 3rem 1.5rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <ul class="sidebar-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contactus.html">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <a href="index.html" class="logo-text">the good guys!</a>
+        </div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html" class="active">About Us</a></li>
+            <li><a href="contactus.html">Contact</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <div class="page-tag">About The Good Guys</div>
+            <h1>Your Trusted Footwear Source</h1>
+            <p>A passionate one-person operation dedicated to bringing you premium footwear through careful curation and exceptional service. Every order is handled with personal attention and care.</p>
+        </div>
+    </section>
+
+    <!-- Mission Section -->
+    <section class="mission-section">
+        <div class="mission-container">
+            <h2>What We Do</h2>
+            <p>The Good Guys is a carefully curated online footwear business focused on bringing you quality shoes from trusted brands. Operating independently allows me to personally select each product, ensuring that what you receive meets the highest standards of quality and style.</p>
+            <p>Whether you're looking for the latest sneaker drops, classic styles, or performance footwear, I source and deliver authentic products directly to you. No physical storefront means lower overhead, which translates to competitive pricing and personalized service.</p>
+            <p>Every inquiry is answered personally, every order is carefully packaged, and every customer becomes part of the Good Guys family.</p>
+        </div>
+    </section>
+
+
+
+    <!-- Why Choose Section -->
+    <section class="why-choose-section">
+        <div class="section-header">
+            <div class="section-tag">Why Choose Us</div>
+            <h2>The Good Guys Difference</h2>
+        </div>
+
+        <div class="why-grid">
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="why-content">
+                    <h3>100% Authentic Guarantee</h3>
+                    <p>All products are sourced from authorized distributors and verified for authenticity before shipping to you.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <div class="why-content">
+                    <h3>Personalized Service</h3>
+                    <p>Direct communication with me means faster responses, custom recommendations, and a shopping experience tailored to you.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-box"></i>
+                </div>
+                <div class="why-content">
+                    <h3>Careful Packaging</h3>
+                    <p>Every order is personally inspected and securely packaged to ensure your shoes arrive in perfect condition.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-tags"></i>
+                </div>
+                <div class="why-content">
+                    <h3>Competitive Pricing</h3>
+                    <p>No physical store means lower costs. I pass those savings directly to you with fair, competitive prices.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <div class="why-content">
+                    <h3>Efficient Processing</h3>
+                    <p>Orders are processed quickly and shipped promptly. I value your time as much as you do.</p>
+                </div>
+            </div>
+
+            <div class="why-item">
+                <div class="why-icon">
+                    <i class="fas fa-redo-alt"></i>
+                </div>
+                <div class="why-content">
+                    <h3>Hassle-Free Returns</h3>
+                    <p>Not satisfied? I make returns and exchanges simple and straightforward. Your happiness matters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2>Ready to Step Up?</h2>
+            <p>Browse our curated collection and find your perfect pair. Have questions? Don't hesitate to reach out—I'm here to help!</p>
+            <a href="index.html" class="btn-cta">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <h3>THE GOOD GUYS</h3>
+                <p>Your trusted source for authentic footwear. Operated with passion, dedication, and a commitment to bringing you the best shoes at the best prices.</p>
+                <div class="footer-socials">
+                    <a href="https://www.facebook.com/profile.php?id=61563343993074" target="_blank" class="social-icon">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="https://www.instagram.com/goodguyfactory?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" class="social-icon">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="footer-links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="contactus.html">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Shipping Info</a></li>
+                    <li><a href="#">Returns</a></li>
+                </ul>
+            </div>
+            <div class="footer-links">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 The Good Guys. All rights reserved. | Crafted with passion for footwear excellence</p>
+        </div>
+    </footer>
+
+    <script>
+        // Hamburger and Sidebar Toggle
+        const hamburger = document.getElementById('hamburger');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const sidebarLinks = document.querySelectorAll('.sidebar-links a');
+
+        hamburger.addEventListener('click', function() {
+            hamburger.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
+        });
+
+        sidebarOverlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            sidebar.classList.remove('active');
+            sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        sidebarLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                hamburger.classList.remove('active');
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+    </script>
+</body>
+</html>
